@@ -75,7 +75,7 @@ public class Agenda implements Serializable{
         return lista.size();
     }
 
-    public void modificarContacto(Contacto contacto, String atributo, String valor) {
+    public void modificarContacto(Contacto contacto, String atributo, String valor) throws ErrorContactoNoEncontrado {
         Contacto encontrado = buscar(contacto);
         if (encontrado != null) {
             switch (atributo.toLowerCase()) {
@@ -95,6 +95,8 @@ public class Agenda implements Serializable{
                     System.out.println("Atributo no reconocido.");
                     break;
             }
+        }else {
+            throw new ErrorContactoNoEncontrado(contacto);
         }
     }
 

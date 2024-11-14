@@ -105,8 +105,12 @@ public class Interfaz {
 
     private void modificar(String nombre, String apellido, String atributo, String nuevo) {
         if (atributo.equals("nombre")||atributo.equals("apellido")||atributo.equals("telefono")||atributo.equals("favorito")) {
-            agenda.modificarContacto(new Contacto(nombre, apellido), atributo, nuevo);
-            System.out.println("Contacto modificado.");
+            try {
+                agenda.modificarContacto(new Contacto(nombre, apellido), atributo, nuevo);
+                System.out.println("Contacto modificado.");
+            }catch(ErrorContactoNoEncontrado e){
+                System.out.println("El contacto " + e.getContacto().getNombre()+" no se ha encontrado");
+            }
         } else {
             System.out.println("Atributo no valido");
         }
