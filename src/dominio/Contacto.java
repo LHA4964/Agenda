@@ -62,6 +62,7 @@ public class Contacto implements Serializable{
         Contacto c = (Contacto)o;
         return nombre.equals(c.nombre) && apellido.equals(c.apellido);
     }
+
     public int hashCode(Object o) {
         return (nombre.hashCode()-1)*33+apellido.hashCode();
     }

@@ -16,20 +16,15 @@ public class Agenda implements Serializable{
         }
         return lista.get(indice);
     }
-
-    public Contacto buscar(String nombre, String apellido){
+    public Contacto buscar(String nombre){
         for (Contacto c : lista) {
-            if(c.getNombre().equals(nombre) && c.getApellido().equals(apellido)) {
+            if(c.getNombre().equalsIgnoreCase(nombre)) {
                 return c;
             }
         }
         return null;
     }
 
-    public Agenda aniadir(Contacto c){
-        lista.add(c);
-        return this;
-    }
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("Contactos:\n");
@@ -40,17 +35,22 @@ public class Agenda implements Serializable{
     }
     public String favorito(){
         StringBuilder sb = new StringBuilder();
+        sb.append("Contactos:\n");
         for (Contacto c : lista){
-            if (c.getFavorito().equals("si")){
+            if (c.getFavorito().equalsIgnoreCase("si")){
                 sb.append(c).append("\n");
             }
         }
-        return sb.toString();
+        return String.valueOf(sb);
     }
 
-    public Agenda add(Contacto c) {
-        lista.add(c);
-        return this;
+    public Agenda add(Contacto c)throws ErrorContactoDuplicado{
+        if(lista.contains(c)) {
+            throw new ErrorContactoDuplicado(c);
+        }else {
+            lista.add(c);
+            return this;
+        }
     }
 
     /*public boolean borrar(Contacto c){
@@ -62,12 +62,13 @@ public class Agenda implements Serializable{
         return false;
     }
      */
-    public boolean borrar(Contacto c){
+    public Agenda borrar(Contacto c)throws ErrorContactoNoEncontrado{
         if(lista.contains(c)) {
             lista.remove(c);
-            return true;
+            return this;
+        }else{
+            throw new ErrorContactoNoEncontrado(c);
         }
-        return false;
     }
 
     public int size() {
@@ -105,7 +106,6 @@ public class Agenda implements Serializable{
             return new Agenda();
         }
     }
-
     public void guardar() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("contactos.dat"))) {
             oos.writeObject(this);
